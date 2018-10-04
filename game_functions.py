@@ -122,6 +122,7 @@ def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets, abulle
     for abullet in abullets.copy():
         if abullet.rect.top >= ai_settings.screen_height:
             abullets.remove(abullet)
+            """test"""
 
     check_bullet_alien_collisions(ai_settings, screen, stats,  sb, ship,
         aliens, bullets, abullets)
