@@ -7,16 +7,16 @@ class Audio:
         pygame.mixer.init()
         pygame.mixer.set_num_channels(5)
         self.oscia = pygame.mixer.Channel(1)
-        self.oscib = pygame.mixer.Sound("osci.wav")
+        self.oscib = pygame.mixer.Sound("audio/osci.wav")
         self.exploa = pygame.mixer.Channel(2)
-        self.explob = pygame.mixer.Sound("explo.wav")
+        self.explob = pygame.mixer.Sound("audio/explo.wav")
         self.pewa = pygame.mixer.Channel(4)
-        self.pewb = pygame.mixer.Sound("pew.wav")
+        self.pewb = pygame.mixer.Sound("audio/pew.wav")
         self.omin = pygame.mixer.Channel(0)
-        self.omina = pygame.mixer.Sound("omina.wav")
-        self.ominb = pygame.mixer.Sound("ominb.wav")
-        self.ominc = pygame.mixer.Sound("ominc.wav")
-        self.omind = pygame.mixer.Sound("omind.wav")
+        self.omina = pygame.mixer.Sound("audio/omina.wav")
+        self.ominb = pygame.mixer.Sound("audio/ominb.wav")
+        self.ominc = pygame.mixer.Sound("audio/ominc.wav")
+        self.omind = pygame.mixer.Sound("audio/omind.wav")
 
     @staticmethod
     def play():
