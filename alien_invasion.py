@@ -5,8 +5,11 @@ from game_stats import GameStats
 from scoreboard import Scorebord
 from button import Button
 from ship import Ship
-from alien import Alien
+from ralien import RAlien
+from menu import Menu
+from audio import Audio
 import game_functions as gf
+
 
 def run_game():
     # Initialize pygame, settings, and screen object.
@@ -17,10 +20,16 @@ def run_game():
     pygame.display.set_caption("Alien Invasion")
 
     # Make the Play button.
-    play_button = Button(ai_settings, screen, "PLAY GAME", 80/100)
+    play_button = Button(screen, "PLAY GAME", 80/100)
 
     # Make the High Score button.
-    score_button = Button(ai_settings, screen, "HIGH SCORES", 90/100)
+    score_button = Button(screen, "HIGH SCORES", 90/100)
+
+    # Audio
+    audio = Audio()
+
+    # Make the menu
+    menu = Menu()
 
     # Create an instance to store game statistics and create a scoreboard.
     stats = GameStats(ai_settings)
@@ -28,27 +37,31 @@ def run_game():
 
     # Make a ship, a group of bullets, and a group of aliens.
     ship = Ship(ai_settings, screen)
+    ralien = RAlien(ai_settings, screen)
     bullets = Group()
     abullets = Group()
-    aliens= Group()
+    aliens = Group()
+    death = Group()
+    bunkers = Group()
 
     # Create the fleet of aliens.
-    gf.create_fleet(ai_settings, screen, ship, aliens)
+    gf.create_fleet(ai_settings, screen, aliens)
 
     # Start the main loop for the game.
     while True:
         pygame.time.Clock().tick(ai_settings.game_speed)
-        gf.check_events(ai_settings, screen, stats, sb, play_button, ship,
-            aliens, bullets, score_button)
+        gf.check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets,
+                        score_button, menu, audio, bunkers)
 
         if stats.game_active:
-            ship.update()
-            gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens,
-                bullets, abullets)
-            gf.update_aliens(ai_settings, screen, stats, sb, ship, aliens, bullets, abullets)
+            ship.update(audio)
+            ralien.update(audio)
+            gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets,
+                              abullets, ralien, audio, death, bunkers)
+            gf.update_aliens(ai_settings, screen, ship, aliens, abullets)
 
+        gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button,
+                         score_button, abullets, menu, ralien, audio, death, bunkers)
 
-        gf.update_screen(ai_settings, screen, stats, sb, ship, aliens,
-            bullets, play_button, score_button, abullets)
 
 run_game()

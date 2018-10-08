@@ -1,6 +1,12 @@
 import pygame
 from pygame.sprite import Sprite
 
+
+def load_image(name):
+    image = pygame.image.load(name)
+    return image
+
+
 class Ship(Sprite):
 
     def __init__(self, ai_settings, screen):
@@ -25,16 +31,39 @@ class Ship(Sprite):
         self.moving_right = False
         self.moving_left = False
 
-    def update(self):
-        """Update the ship's position, based on movement flags."""
-        # Update the ship's center value, not the rect.
-        if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.center += self.ai_settings.ship_speed_factor
-        if self.moving_left and self.rect.left > 0:
-            self.center -= self.ai_settings.ship_speed_factor
+        # Death.
+        self.index = 0
+        self.images = []
+        self.images.append(load_image('images/sd1.png'))
+        self.images.append(load_image('images/sd2.png'))
+        self.deadc = 10
+        self.dead = False
+        self.image_speed = 1
 
-        # Update rect object from self.center.
-        self.rect.centerx = self.center
+    def update(self, audio):
+        """Update the ship's position, based on movement flags."""
+        # Update death animation.
+        if self.dead:
+            if not audio.exploa.get_busy():
+                self.ai_settings.audio_level = 0
+                audio.exploa.play(audio.explob)
+            self.image_speed -= 1
+            if self.image_speed == 0:
+                self.index += 1
+                if self.index >= len(self.images):
+                    self.index = 0
+                self.image = self.images[self.index]
+                self.image_speed = 30
+                self.deadc -= 1
+        else:
+            # Update the ship's center value, not the rect.
+            if self.moving_right and self.rect.right < self.screen_rect.right:
+                self.center += self.ai_settings.ship_speed_factor
+            if self.moving_left and self.rect.left > 0:
+                self.center -= self.ai_settings.ship_speed_factor
+
+            # Update rect object from self.center.
+            self.rect.centerx = self.center
 
     def blitme(self):
         """Draw the ship at its current location."""

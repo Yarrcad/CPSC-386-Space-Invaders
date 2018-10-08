@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
+
 class Bullet(Sprite):
     """A class to manage bullets fired from the ship."""
 
@@ -17,7 +18,6 @@ class Bullet(Sprite):
 
         # Store a decimal value for the bullet's position.
         self.y = float(self.rect.y)
-        self.color = ai_settings.bullet_color
         self.speed_factor = ai_settings.bullet_speed_factor
 
     def update(self):
@@ -31,7 +31,3 @@ class Bullet(Sprite):
     def draw_bullet(self):
         """Draw the bullet to the screen."""
         self.screen.blit(self.image, self.rect)
-
-    def center_ship(self):
-        """Center the ship on the screen."""
-        self.center = self.screen_rect.centerx

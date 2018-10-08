@@ -1,10 +1,11 @@
 import pygame
 from pygame.sprite import Sprite
-import sys
+
 
 def load_image(name):
     image = pygame.image.load(name)
     return image
+
 
 class ABullet(Sprite):
     """A class to manage bullets fired from the ship."""
@@ -50,7 +51,3 @@ class ABullet(Sprite):
     def draw_bullet(self):
         """Draw the bullet to the screen."""
         self.screen.blit(self.image, self.rect)
-
-    def center_ship(self):
-        """Center the ship on the screen."""
-        self.center = self.screen_rect.centerx
