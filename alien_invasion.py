@@ -58,7 +58,7 @@ def run_game():
             ralien.update(audio)
             gf.update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets,
                               abullets, ralien, audio, death, bunkers)
-            gf.update_aliens(ai_settings, screen, ship, aliens, abullets)
+            gf.update_aliens(ai_settings, screen, ship, aliens, abullets, bunkers)
 
         gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button,
                          score_button, abullets, menu, ralien, audio, death, bunkers)

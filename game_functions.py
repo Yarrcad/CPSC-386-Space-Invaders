@@ -115,7 +115,7 @@ def update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_bu
             menu.scores(score_button, screen)
     else:
         if ship.deadc == 0:
-            ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets, abullets)
+            ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets, abullets, ralien)
         # Redraw all bullets, behind ship and aliens.
         for bullet in bullets.sprites():
             bullet.draw_bullet()
@@ -184,7 +184,9 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, 
     if pygame.sprite.groupcollide(bullets, bunkers, True, False) or \
             pygame.sprite.groupcollide(abullets, bunkers, True, False):
         audio.exploa.play(audio.explob)
-    if pygame.sprite.spritecollideany(ralien, bullets):
+    collisions = pygame.sprite.spritecollideany(ralien, bullets)
+    if collisions:
+        bullets.remove(collisions)
         ralien.dead()
         stats.score += 200
         sb.prep_score()
@@ -284,9 +286,10 @@ def change_fleet_direction(ai_settings, aliens):
     ai_settings.fleet_direction *= -1
 
 
-def ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets, abullets):
+def ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets, abullets, ralien):
     """Respond to ship beinghit by alien."""
     if stats.ships_left > 0:
+        ralien.dead()
         # Decrement ships_left.
         stats.ships_left -= 1
 
@@ -327,7 +330,7 @@ def check_aliens_bottom(screen, ship, aliens):
             break
 
 
-def update_aliens(ai_settings, screen, ship, aliens, abullets):
+def update_aliens(ai_settings, screen, ship, aliens, abullets, bunkers):
     """
     Check if the fleet is at an edge,
       and then update the positions of all aliens in the fleet.
@@ -339,6 +342,7 @@ def update_aliens(ai_settings, screen, ship, aliens, abullets):
     if pygame.sprite.spritecollideany(ship, aliens):
         if ship.deadc == 10:
             ship.dead = True
+    pygame.sprite.groupcollide(aliens, bunkers, False, True)
 
     # Look for aliens hitting the bottom of the screen.
     check_aliens_bottom(screen, ship, aliens)
