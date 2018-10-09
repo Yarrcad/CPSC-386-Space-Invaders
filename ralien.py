@@ -34,7 +34,7 @@ class RAlien(Sprite):
     def update(self, audio):
         """Update the ship's position, based on movement flags."""
         # Update the ship's center value, not the rect.
-        if random.randint(0, 2000) == 0 and not self.moving_right:
+        if random.randint(0, 5000) == 0 and not self.moving_right:
             self.moving_right = True
             self.rect.right = self.screen_rect.left
         if self.moving_right:
